@@ -1,4 +1,5 @@
 import express from "express";
+import blogsRouter from "./controllers/blogs.js"
 import mongoose from "mongoose";
 import config from "./utils/config.js";
 import logger from "./utils/logger.js";
@@ -17,5 +18,7 @@ mongoose
   .catch((error) => logger.error("error connecting", error.message));
 
 app.use(express.static("dist"));
+
+app.use('/api/blogs',blogsRouter)
 
 export default app;
