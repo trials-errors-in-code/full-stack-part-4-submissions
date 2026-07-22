@@ -3,7 +3,7 @@ import config from "./utils/config.js";
 import logger from "./utils/logger.js";
 
 app.listen(config.PORT, () => {
-  console.log(`Server running on port ${config.PORT}`);
+  logger.info(`Server running on port ${config.PORT}`);
 });
 
 // app.get("/api/blogs", (request, response) => {
@@ -18,9 +18,4 @@ app.listen(config.PORT, () => {
 //   blog.save().then((result) => {
 //     response.status(201).json(result);
 //   });
-// });
-
-// const PORT = 3003;
-// app.listen(PORT, () => {
-//   console.log(`Server running on port ${PORT}`);
 // });
