@@ -1,0 +1,142 @@
+const blogsList1 = [
+  {
+    title: "Understanding JavaScript Closures - Google",
+    author: "John Smith",
+    url: "https://www.google.com",
+    likes: 42,
+    id: "6a60dfb359e7bf0bb783b596",
+  },
+  {
+    title: "A Complete Guide to Node.js",
+    author: "Emily Johnson",
+    url: "https://example.com/nodejs-guide",
+    likes: 87,
+    id: "6a60dfb359e7bf0bb783b597",
+  },
+  {
+    title: "Getting Started with Express",
+    author: "Michael Brown",
+    url: "https://example.com/express-intro",
+    likes: 31,
+    id: "6a60dfb359e7bf0bb783b598",
+  },
+  {
+    title: "Mastering MongoDB Basics",
+    author: "Sophia Davis",
+    url: "https://example.com/mongodb-basics",
+    likes: 56,
+    id: "6a60dfb359e7bf0bb783b599",
+  },
+  {
+    title: "REST API Design Best Practices",
+    author: "Daniel Wilson",
+    url: "https://example.com/rest-api-design",
+    likes: 94,
+    id: "6a60dfb359e7bf0bb783b59a",
+  },
+  {
+    title: "Building Secure Authentication Systems",
+    author: "Ava White",
+    url: "https://example.com/secure-authentication",
+    likes: 112,
+    id: "6a60dfb359e7bf0bb783b59f",
+  },
+  {
+    title: "Async Programming in JavaScript",
+    author: "Olivia Martinez",
+    url: "https://example.com/async-javascript",
+    likes: 73,
+    id: "6a60dfb359e7bf0bb783b59b",
+  },
+  {
+    title: "Introduction to Docker",
+    author: "James Anderson",
+    url: "https://example.com/docker-introduction",
+    likes: 61,
+    id: "6a60dfb359e7bf0bb783b59c",
+  },
+  {
+    title: "Testing Express Applications",
+    author: "Isabella Thomas",
+    url: "https://example.com/testing-express",
+    likes: 48,
+    id: "6a60dfb359e7bf0bb783b59d",
+  },
+  {
+    title: "Deploying Apps with Vercel",
+    author: "William Taylor",
+    url: "https://example.com/vercel-deployment",
+    likes: 29,
+    id: "6a60dfb359e7bf0bb783b59e",
+  },
+  {
+    id: "5a422a851b54a676234d17f7",
+    title: "React patterns",
+    author: "Michael Chan",
+    url: "https://reactpatterns.com/",
+    likes: 7,
+  },
+  {
+    id: "5a422aa71b54a676234d17f8",
+    title: "Go To Statement Considered Harmful",
+    author: "Edsger W. Dijkstra",
+    url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
+    likes: 5,
+  },
+  {
+    id: "5a422b3a1b54a676234d17f9",
+    title: "Canonical string reduction",
+    author: "Edsger W. Dijkstra",
+    url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+    likes: 12,
+  },
+  {
+    id: "5a422b891b54a676234d17fa",
+    title: "First class tests",
+    author: "Robert C. Martin",
+    url: "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
+    likes: 10,
+  },
+  {
+    id: "5a422ba71b54a676234d17fb",
+    title: "TDD harms architecture",
+    author: "Robert C. Martin",
+    url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
+    likes: 0,
+  },
+  {
+    id: "5a422bc61b54a676234d17fc",
+    title: "Type wars",
+    author: "Robert C. Martin",
+    url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
+    likes: 2,
+  },
+];
+
+function getHighest(obj, property) {
+  let returnObj;
+  let max = 0;
+  for (let key in obj) {
+    if (obj[key] > max) {
+      max = obj[key];
+      returnObj = {
+        author: key,
+        [property]: obj[key],
+      };
+    }
+  }
+  return returnObj;
+}
+
+const mostBlogs = (blogs) => {
+  let obj = blogs.reduce((acc, curr, index) => {
+    if (!(curr.author in acc)) {
+      acc[curr.author] = 1;
+    } else {
+      acc[curr.author] += 1;
+    }
+    return acc;
+  }, {});
+  return getHighest(obj, "blogs");
+};
+console.log(mostBlogs(blogsList1));
