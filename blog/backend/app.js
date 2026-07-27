@@ -1,5 +1,5 @@
 import express from "express";
-import blogsRouter from "./controllers/blogs.js"
+import blogsRouter from "./controllers/blogs.js";
 import mongoose from "mongoose";
 import config from "./utils/config.js";
 import logger from "./utils/logger.js";
@@ -19,6 +19,12 @@ mongoose
 
 app.use(express.static("dist"));
 
-app.use('/api/blogs',blogsRouter)
+if (process.env.NODE_ENV !== "test") {
+  app.use(middleware.requestLogger);
+}
+
+app.use("/api/blogs", blogsRouter);
+app.use(middleware.unknownEndpoint);
+app.use(middleware.errorHandler);
 
 export default app;

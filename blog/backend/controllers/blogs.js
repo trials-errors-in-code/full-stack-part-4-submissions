@@ -6,26 +6,38 @@ let count = 1;
 const blogsRouter = express.Router();
 
 blogsRouter.get("/", (req, res) => {
-  console.log("Getting api/blogs");
   Blog.find({}).then((data) => {
-    console.log((count++)/2);
+    logger.info(count++ / 2);
     res.json(data);
   });
 });
 
-blogsRouter.post("/", (req, res) => {
+blogsRouter.post("/", async (req, res) => {
   const { title, author, url, likes } = req.body;
   const blog = new Blog({
-    title: title || "none",
+    title: title,
     author: author || "none",
-    url: url || "no url provided",
-    likes: likes,
+    url: url,
+    likes: likes || 0,
   });
-  blog
-    .save()
-    .then((blog) => res.json(blog))
-    .catch((error) =>
-      logger.error("error posting the data to mongo db", error.message),
-    );
+  await blog.save();
+  res.status(201).json(blog);
 });
+blogsRouter.delete("/:id", async (req, res) => {
+  const id = req.params.id;
+  await Blog.findByIdAndDelete(id);
+  res.status(204).end();
+});
+blogsRouter.put("/:id", async (req, res) => {
+  const { title, author, url, likes } = req.body;
+  const id = req.params.id;
+  const blog = await Blog.findById(id);
+  blog.title = title;
+  blog.author = author;
+  blog.url = url;
+  blog.likes = likes || 0;
+  const updatedBlog = await blog.save();
+  res.json(updatedBlog);
+});
+
 export default blogsRouter;

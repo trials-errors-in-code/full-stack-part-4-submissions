@@ -13,7 +13,7 @@ const errorHandler = (error, req, res, next) => {
   if (error.name === "CastError") {
     return res.status(400).send("malformatted id");
   } else if (error.name === "ValidationError") {
-    return res.status(404).json({ error: error.message });
+    return res.status(400).json({ error: error.message });
   }
   next(error);
 };
@@ -21,4 +21,4 @@ const errorHandler = (error, req, res, next) => {
 const unknownEndpoint = (req, res) => {
   return res.status(404).send({ error: "unknown endpoint" });
 };
-export default { requestLogger };
+export default { requestLogger, errorHandler, unknownEndpoint };
