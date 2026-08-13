@@ -47,7 +47,7 @@ beforeEach(async () => {
 });
 
 describe("api", () => {
-  test("blogs are returned as json", async () => {
+  test.only("blogs are returned as json", async () => {
     await api
       .get("/api/blogs")
       .expect(200)

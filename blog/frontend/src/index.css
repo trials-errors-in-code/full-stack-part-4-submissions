@@ -1,31 +1,73 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
   color: #1f2937;
   margin: 0;
   min-height: 100vh;
-  padding: 24px;
 }
 
 body * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
+}
+
+button {
+  margin-top: 10px;
+  width: 5rem;
+  border: 2px dashed black;
+  background: antiquewhite
+}
+
+.notification {
+  border: 4px solid #0f766e;
+  font-weight: bolder;
+  background-color: #b9dfdf;
+  padding: 10px;
+
+}
+
+.list-heading {
+  margin: 20px;
+}
+
+.create-blog-form {
+  padding: 20px 0px;
+  display: flex;
+  flex-direction: column;
+}
+
+.create-blog-form>label {
+  display: flex;
+  flex-direction: row;
+  width: 300px;
+  justify-content: space-between;
 }
 
 .AI-app-shell {
-  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px;
   margin: 0 auto;
 }
 
 .AI-blog-list {
   display: flex;
-  flex-direction: column;
+  flex-flow: row wrap;
   gap: 14px;
+  justify-content: space-evenly;
 }
 
 .AI-blog-card {
   background: white;
+  width: 400px;
   border: 1px solid #e5e7eb;
   border-radius: 16px;
   padding: 18px 20px;
@@ -90,4 +132,71 @@ h4 {
   color: #0f766e;
   border-left: 4px solid #14b8a6;
   font-weight: 600;
+}
+
+
+
+/* !AI CSS BELOW */
+.AI-error {
+  /* Sharp, Vivid Colors */
+  color: #ffffff;
+  background-color: #d86868;
+  /* Deep, sharp crimson red */
+  border: 1px solid #b71c1c;
+  /* Darker red outline for definition */
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.2);
+  /* Subtle glow matching the red */
+
+  /* Typography & Layout */
+  font-size: 16px;
+  font-weight: 600;
+  /* Extra bold for sharp readability */
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+
+  /* Flexbox & Animation Controls */
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+
+  /* Sharp Entry Animation */
+  animation: sharpSlideIn 0.25s cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+/* Sharp, bright countdown bar at the bottom */
+.AI-error::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background-color: #ffcdd2;
+  /* Bright pinkish-white for a stark contrast */
+  width: 100%;
+  animation: shrinkWidth 5s linear forwards;
+}
+
+/* Animations */
+@keyframes sharpSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98) translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes shrinkWidth {
+  from {
+    width: 100%;
+  }
+
+  to {
+    width: 0%;
+  }
 }

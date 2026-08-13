@@ -1,32 +1,144 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import "./App.css";
+import Blog from "./components/Blog";
+import blogService from "./services/blogs";
+import loginService from "./services/login";
+import CreateBlog from "./components/CreateBlog";
 
 function App() {
   const [blogs, setBlogs] = useState([]);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
+  const [notification, setNotification] = useState(null);
+  const getBlogs = () => {
+    blogService.getAll().then((data) => setBlogs(data));
+  };
+
   useEffect(() => {
-    axios
-      .get(`/api/blogs`)
-      .then((res) => res.data)
-      .then((data) => setBlogs(data))
-      .catch((error) => console.log(error.message));
+    const loggedUserJSON = window.localStorage.getItem("BlogAppUser");
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON);
+      setUser(user);
+      blogService.setToken(user.token);
+      getBlogs();
+    }
   }, []);
-  if (blogs.length === 0) {
-    return null;
-  }
+
+  const handleLogin = async (event) => {
+    event.preventDefault();
+
+    try {
+      const user = await loginService.login({ username, password });
+      if (user) {
+        window.localStorage.setItem("BlogAppUser", JSON.stringify(user));
+        blogService.setToken(user.token);
+        setUser(user);
+        getBlogs();
+        setUsername("");
+        setPassword("");
+      }
+    } catch (error) {
+      if (!error.error) {
+        setError(error.message);
+      } else {
+        setError(error.error);
+        console.log("wrong credentials");
+      }
+    }
+  };
+
+  const loginForm = () => {
+    return (
+      <>
+        <h2>Login</h2>
+        <form onSubmit={handleLogin}>
+          <div>
+            <label>
+              username{" "}
+              <input
+                autoComplete="true"
+                type="text"
+                value={username}
+                onChange={({ target }) => setUsername(target.value)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              password{" "}
+              <input
+                autoComplete="true"
+                type="text"
+                value={password}
+                onChange={({ target }) => setPassword(target.value)}
+              />
+            </label>
+          </div>
+          <button type="submit">Login</button>
+        </form>
+      </>
+    );
+  };
+
+  // useEffect(() => {
+  //   blogService.getAll().then((data) => setBlogs(data));
+  // }, []);
+
+  const handleLogout = () => {
+    setUser("null");
+    window.localStorage.removeItem("BlogAppUser");
+    sessionStorage.clear();
+
+    window.location.reload();
+  };
+  const logoutButton = () => {
+    return (
+      <>
+        <button onClick={handleLogout}>Logout</button>
+      </>
+    );
+  };
   return (
     <>
       <div className="AI-app-shell">
-        <h2>List of blogs</h2>
-        <div className="BlogList AI-blog-list">
-          {blogs.map((blog) => (
-            <div className="AI-blog-card">
-              <button className="title AI-title"><a href={blog.url}><h4>{blog.title}</h4></a></button>
-              <div className="details AI-details"><h5>by {blog.author}</h5><span>liked by {blog.likes}</span></div>
-            </div>
-          ))}
+        {error && (
+          <>
+            <div className="AI-error">{error}</div>
+          </>
+        )}
+        {notification && (
+          <>
+            <div className="notification">{notification}</div>
+          </>
+        )}
+        <div style={{ fontWeight: "bolder", margin: "5px 0px" }}>
+          the get blogs api endpoint works irrespective of user login or token
+          timeout
         </div>
-        <div className="AI-note">this is great code</div>
+
+        {!user && loginForm()}
+        {user && logoutButton()}
+        {user && (
+          <CreateBlog setError={setError} setNotifcation={setNotification} />
+        )}
+
+        {user && blogs.length !== 0 ? (
+          <>
+            <p style={{ border: "2px dashed black", padding: "10px" }}>
+              {user.name} logged in
+            </p>
+
+            <h2 className="list-heading">List of blogs</h2>
+            <div className="BlogList AI-blog-list">
+              {blogs.map((blog) => (
+                <Blog key={blog.id} blog={blog} />
+              ))}
+            </div>
+            <div className="AI-note">this is great code</div>
+          </>
+        ) : null}
       </div>
     </>
   );
