@@ -10,3 +10,5 @@ node_modules/
 npm-debug.log*
 
 writefile.js
+file.js
+log.js
